@@ -1,0 +1,3 @@
+package com.interview.employeedirectory.datalayer
+
+interface ApiService
