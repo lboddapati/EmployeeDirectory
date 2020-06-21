@@ -9,7 +9,10 @@ class DirectoryApplication: Application() {
         super.onCreate()
         startKoin {
             androidContext(this@DirectoryApplication)
-            modules(applicationModule)
+            modules(
+                applicationModule,
+                presenterFactoryModule
+            )
         }
     }
 }
