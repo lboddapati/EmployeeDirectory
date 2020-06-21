@@ -21,7 +21,7 @@ class EmployeeListActivity: BaseActivity(), EmployeeListContract.View {
     }
 
     override fun displayEmptyState() {
-        setContentView(R.layout.recyclerview)
+        setContentView(R.layout.employee_list_empty_state)
     }
 
     override fun displayEmployeeList(employees: List<Employee>) {

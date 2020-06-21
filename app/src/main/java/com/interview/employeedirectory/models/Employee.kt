@@ -1,7 +1,9 @@
 package com.interview.employeedirectory.models
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Employee(
     @field:Json(name = "uuid") val id: String,
     @field:Json(name = "full_name") val fullName: String,

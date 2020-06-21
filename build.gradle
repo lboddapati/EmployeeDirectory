@@ -6,6 +6,7 @@ buildscript {
     ext.rxjava_version = '2.2.19'
     ext.koin_version = '2.1.6'
     ext.glide_version = '4.11.0'
+    ext.moshi_kotlin_version = '1.9.3'
 
     repositories {
         google()
