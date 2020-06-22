@@ -35,7 +35,7 @@ The app is built using MVP architecture pattern with some Android architecture c
 - [LifecycleAwareSubscriptionManager](app/src/main/java/com/interview/employeedirectory/base/LifecycleAwareSubscriptionManager.kt) - Manages Rx subscriptions based on Android Lifecycle events to prevent potential memory leaks caused by subscriptions running beyond the Activity lifecycle.
 
 ### Caching:
-- **Network response** - Ideally, I would implement an on disk CacheRepository and attempt to load from cache before hitting the network. However, a full cache implementation (with proper cache invalidation and expiration) was taking longer than I anticipated. I settled for storing the employee list in a saved instance state for now (in the interest of time) although it comes with some [caveats](##assumptions--caveats--limitations)
+- **Network response** - Ideally, I would implement an on disk CacheRepository and attempt to load from cache before hitting the network. However, a full cache implementation (with proper cache invalidation and expiration) was taking longer than I anticipated. I settled for storing the employee list in a saved instance state for now (in the interest of time) although it comes with some [caveats](#assumptions--caveats--limitations).
 - **Images** - I chose Glide for image loading because it comes with a built in on-disk caching capabilities for images. Glide saves several versions of the same image (one for each size that is used in the app) which makes it both memory-efficient and also fast in loading images.
 
 ### Dependency Injection:
@@ -60,3 +60,4 @@ The application uses Koin for injecting the DataRepository and Presenters. See [
     - Refresh employee list when user comes back to the activity i.e load requests in onResume instead of onCreate.
 
 # Demo
+![demo](https://media.giphy.com/media/TGLjKOX75kiruaV4gE/giphy.gif)
