@@ -11,6 +11,7 @@ import org.koin.core.inject
 
 class EmployeeListPresenter(
     private val view: EmployeeListContract.View,
+    private val viewModel: EmployeeListViewModel,
     private val subscriptionManager: LifecycleAwareSubscriptionManager
 ): EmployeeListContract.Presenter, KoinComponent {
 
@@ -18,18 +19,29 @@ class EmployeeListPresenter(
 
     override fun onRetryClicked() = loadEmployeeList()
 
+    override fun onSaveInstanceState() = viewModel.saveState()
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    private fun onCreate() {
+        if (viewModel.employees.isNotEmpty()) {
+            view.displayEmployeeList(viewModel.employees)
+            return
+        }
+        loadEmployeeList()
+    }
+
     private fun loadEmployeeList() {
+        viewModel.employees.clear()
         view.displayLoading()
         subscriptionManager.subscribe(
             dataRepository.getEmployees(),
             object: DisposableSingleObserver<List<Employee>>() {
                 override fun onSuccess(employees: List<Employee>) {
-                    // TODO: performance improvements - paginated/infinite loading list
                     if (employees.isEmpty()) {
                         view.displayEmptyState()
                     } else {
                         view.displayEmployeeList(employees)
+                        viewModel.employees.addAll(employees)
                     }
                 }
 

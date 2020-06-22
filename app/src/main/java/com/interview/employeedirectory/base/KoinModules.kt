@@ -5,6 +5,7 @@ import com.interview.employeedirectory.datalayer.DataRepository
 import com.interview.employeedirectory.datalayer.DataRepositoryImpl
 import com.interview.employeedirectory.ui.employeelist.EmployeeListContract
 import com.interview.employeedirectory.ui.employeelist.EmployeeListPresenter
+import com.interview.employeedirectory.ui.employeelist.EmployeeListViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
@@ -16,9 +17,12 @@ val applicationModule = module {
 
 val presenterFactoryModule = module {
     factory<EmployeeListContract.Presenter> {
-            (view: EmployeeListContract.View, lifecycle: Lifecycle) ->
+            (view: EmployeeListContract.View,
+                viewModel: EmployeeListViewModel,
+                lifecycle: Lifecycle) ->
         EmployeeListPresenter(
             view = view,
+            viewModel = viewModel,
             subscriptionManager = get { parametersOf(lifecycle) }
         ).apply { lifecycle.addObserver(this) }
     }

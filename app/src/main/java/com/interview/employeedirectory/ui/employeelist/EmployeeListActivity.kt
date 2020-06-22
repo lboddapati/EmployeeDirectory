@@ -1,5 +1,8 @@
 package com.interview.employeedirectory.ui.employeelist
 
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,10 +14,23 @@ import org.koin.core.parameter.parametersOf
 
 class EmployeeListActivity: BaseActivity(), EmployeeListContract.View {
 
-    private val presenter: EmployeeListContract.Presenter = get {
-        parametersOf(this, lifecycle)
-    }
+    private lateinit var presenter: EmployeeListContract.Presenter
     private val adapter: EmployeeListAdapter by lazy { EmployeeListAdapter() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = get {
+            val viewModel: EmployeeListViewModel by viewModels(
+                factoryProducer = { SavedStateViewModelFactory(application, this, savedInstanceState) }
+            )
+            parametersOf(this, viewModel, lifecycle)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        presenter.onSaveInstanceState()
+        super.onSaveInstanceState(outState)
+    }
 
     override fun displayError() {
         displayError { presenter.onRetryClicked() }
