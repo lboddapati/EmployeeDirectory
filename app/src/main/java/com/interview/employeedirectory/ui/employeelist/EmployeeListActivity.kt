@@ -1,8 +1,6 @@
 package com.interview.employeedirectory.ui.employeelist
 
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,15 +18,17 @@ class EmployeeListActivity: BaseActivity(), EmployeeListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = get {
-            val viewModel: EmployeeListViewModel by viewModels(
-                factoryProducer = { SavedStateViewModelFactory(application, this, savedInstanceState) }
-            )
+            val viewModel = if (savedInstanceState != null) {
+                EmployeeListViewModel.fromBundle(savedInstanceState)
+            } else {
+                EmployeeListViewModel()
+            }
             parametersOf(this, viewModel, lifecycle)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        presenter.onSaveInstanceState()
+        presenter.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
     }
 

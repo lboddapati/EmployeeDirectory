@@ -1,5 +1,6 @@
 package com.interview.employeedirectory.ui.employeelist
 
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.interview.employeedirectory.base.LifecycleAwareSubscriptionManager
@@ -19,7 +20,7 @@ class EmployeeListPresenter(
 
     override fun onRetryClicked() = loadEmployeeList()
 
-    override fun onSaveInstanceState() = viewModel.saveState()
+    override fun onSaveInstanceState(savedState: Bundle) = viewModel.saveState(savedState)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private fun onCreate() {

@@ -1,16 +1,20 @@
 package com.interview.employeedirectory.ui.employeelist
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import android.os.Bundle
 import com.interview.employeedirectory.models.Employee
 
-private const val SAVED_EMPLOYEES_KEY = "saved_employees"
-class EmployeeListViewModel(
-    private val savedStateHandle: SavedStateHandle
-): ViewModel() {
-    val employees: ArrayList<Employee> = savedStateHandle[SAVED_EMPLOYEES_KEY] ?: arrayListOf()
+data class EmployeeListViewModel(
+    var employees: ArrayList<Employee> = arrayListOf()
+) {
+    fun saveState(state: Bundle) {
+        state.putParcelableArrayList(SAVED_EMPLOYEES_KEY, employees)
+    }
 
-    fun saveState() {
-        savedStateHandle.set(SAVED_EMPLOYEES_KEY, employees)
+    companion object {
+        private const val SAVED_EMPLOYEES_KEY = "saved_employees"
+
+        fun fromBundle(bundle: Bundle) = EmployeeListViewModel(
+            bundle.getParcelableArrayList<Employee>(SAVED_EMPLOYEES_KEY) ?: arrayListOf()
+        )
     }
 }
