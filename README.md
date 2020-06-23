@@ -7,7 +7,7 @@
 I focused on creating a clean, modular and testable architecture incorporating best practices. See more under [Architecture](#architecture).
 
 # Copied-in code / dependencies
-I used a pre-written template for the base architecture. All this code was still written by my previously. I use this template as a starting point for my other sample projects. The pre-written template includes:
+I used a pre-written template for the base architecture. All this code was still written by me previously. I use this template as a starting point for my other sample projects. The pre-written template includes:
 - Everything in the [base](app/src/main/java/com/interview/employeedirectory/base) package (with application specific modifications to KoinModules.kt and DirectoryApplication.kt)
 - Skeleton code for the files in [datalayer](app/src/main/java/com/interview/employeedirectory/datalayer) package.
 - The unit test setup under the [base](app/src/test/java/com/interview/employeedirectory/base) package.
