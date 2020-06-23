@@ -1,7 +1,5 @@
 package com.interview.employeedirectory.datalayer
 
-import com.interview.employeedirectory.models.Employee
-import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -15,8 +13,8 @@ class DataRepositoryImpl: DataRepository {
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
-    private val apiService = retrofit.create(ApiService::class.java)
+    private val api = retrofit.create(EmployeeApi::class.java)
 
     //TODO: Implement Caching
-    override fun getEmployees() = apiService.getEmployees().map { it.employees }
+    override fun getEmployees() = api.getEmployees().map { it.employees }
 }
