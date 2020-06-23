@@ -4,7 +4,7 @@
 - Android API level supported: 21+
 
 # Focus Areas
-I focused on creating a clean, modular and testable architecture incorporating Android best practices. See more under [Architecture](#architecture).
+I focused on creating a clean, modular and testable architecture incorporating best practices. See more under [Architecture](#architecture).
 
 # Copied-in code / dependencies
 I used a pre-written template for the base architecture. All this code was still written by my previously. I use this template as a starting point for my other sample projects. The pre-written template includes:
