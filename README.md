@@ -21,8 +21,8 @@ Roughly 5-6 hours.
 
 # Implementation Details
 ## Architecture
-### MVP + Android Architecture Components:
-The app is built using MVP architecture pattern with some Android architecture components (such as Lifecycle and ViewModel).
+### MVP:
+The app is built using MVP architecture pattern.
 
 - Model - This is essentially the Data Layer. The DataRepository is used to fetch/update data (remote or local).
 - View - Implemented by Activity (or Fragment). Renders UI elements. See [EmployeeListActivity.kt](app/src/main/java/com/interview/employeedirectory/ui/employeelist/EmployeeListActivity.kt).
