@@ -17,7 +17,7 @@ Everything else was written specifically for this project.
 The application UI was built to be optimal on a phone. However, it should still scale relatively decently to a tablet.
 
 # How long you spent on the project
-Roughly 5-6 hours. I spent a little extra time on putting together a persistant cache layer for network responses but it was taking longer than I anticipated (I tried using Room for the first time). Since the instructions mentioned disk caching isn't required anyway, I settled for saving the data in instance state for now to handle rotations.
+Roughly 5-6 hours.
 
 # Implementation Details
 ## Architecture
