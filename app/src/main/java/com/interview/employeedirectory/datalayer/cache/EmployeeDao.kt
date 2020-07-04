@@ -4,18 +4,23 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.interview.employeedirectory.models.Employee
 import io.reactivex.Completable
 import io.reactivex.Maybe
 
 @Dao
 interface EmployeeDao {
-    @Query("SELECT * FROM Employees")
-    fun getEmployees(): Maybe<List<Employee>>
+    @Query("SELECT * FROM Employees WHERE :currentTime - timeCreated <= :timeToLive")
+    fun getEmployees(
+        currentTime: Long = System.currentTimeMillis(),
+        timeToLive: Long = EmployeeEntity.timeToLive
+    ): Maybe<List<EmployeeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(employees: List<Employee>)
+    fun insertAll(employees: List<EmployeeEntity>)
 
-    @Query("DELETE FROM Employees")
-    fun deleteAll(): Completable
+    @Query("DELETE FROM Employees WHERE :currentTime - timeCreated > :timeToLive")
+    fun deleteExpired(
+        currentTime: Long = System.currentTimeMillis(),
+        timeToLive: Long = EmployeeEntity.timeToLive
+    ): Completable
 }

@@ -6,9 +6,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-@Entity(tableName = "Employees")
 data class Employee(
-    @PrimaryKey @field:Json(name = "uuid") val id: String,
+    @field:Json(name = "uuid") val id: String,
     @field:Json(name = "full_name") val fullName: String,
     @field:Json(name = "phone_number") val phoneNumber: String?,
     @field:Json(name = "email_address") val email: String,

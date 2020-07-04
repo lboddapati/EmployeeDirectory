@@ -2,6 +2,8 @@ package com.interview.employeedirectory.datalayer
 
 import android.util.Log
 import com.interview.employeedirectory.datalayer.cache.PersistentCache
+import com.interview.employeedirectory.datalayer.cache.asEntity
+import com.interview.employeedirectory.datalayer.cache.toDataModel
 import com.interview.employeedirectory.models.Employee
 import io.reactivex.Single
 import org.koin.core.KoinComponent
@@ -25,11 +27,12 @@ class DataRepositoryImpl: DataRepository, KoinComponent {
 
     override fun getEmployees(): Single<List<Employee>> {
         return persistentCache.employeeDao.getEmployees()
+            .map { it.toDataModel() }
             .filter { it.isNotEmpty() }
             .switchIfEmpty(
                 api.getEmployees()
                     .map { it.employees }
-                    .doOnSuccess { persistentCache.employeeDao.insertAll(it) }
+                    .doOnSuccess { persistentCache.employeeDao.insertAll(it.asEntity()) }
             )
     }
 }
