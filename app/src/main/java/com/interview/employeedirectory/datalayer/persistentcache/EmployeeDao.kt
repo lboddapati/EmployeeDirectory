@@ -1,4 +1,4 @@
-package com.interview.employeedirectory.datalayer.cache
+package com.interview.employeedirectory.datalayer.persistentcache
 
 import androidx.room.Dao
 import androidx.room.Insert

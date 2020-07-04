@@ -1,4 +1,4 @@
-package com.interview.employeedirectory.datalayer.cache
+package com.interview.employeedirectory.datalayer.persistentcache
 
 import androidx.room.TypeConverter
 import com.interview.employeedirectory.models.EmployeeType

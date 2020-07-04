@@ -1,9 +1,9 @@
 package com.interview.employeedirectory.datalayer
 
-import android.util.Log
-import com.interview.employeedirectory.datalayer.cache.PersistentCache
-import com.interview.employeedirectory.datalayer.cache.asEntity
-import com.interview.employeedirectory.datalayer.cache.toDataModel
+import com.interview.employeedirectory.datalayer.memorycache.MemoryCacheRepository
+import com.interview.employeedirectory.datalayer.persistentcache.PersistentCacheRepository
+import com.interview.employeedirectory.datalayer.persistentcache.asEntity
+import com.interview.employeedirectory.datalayer.persistentcache.toDataModel
 import com.interview.employeedirectory.models.Employee
 import io.reactivex.Single
 import org.koin.core.KoinComponent
@@ -23,16 +23,24 @@ class DataRepositoryImpl: DataRepository, KoinComponent {
         .build()
     private val api = retrofit.create(EmployeeApi::class.java)
 
-    private val persistentCache: PersistentCache by inject()
+    private val memoryCacheRepository: MemoryCacheRepository by inject()
+    private val persistentCacheRepository: PersistentCacheRepository by inject()
 
-    override fun getEmployees(): Single<List<Employee>> {
-        return persistentCache.employeeDao.getEmployees()
-            .map { it.toDataModel() }
-            .filter { it.isNotEmpty() }
-            .switchIfEmpty(
-                api.getEmployees()
-                    .map { it.employees }
-                    .doOnSuccess { persistentCache.employeeDao.insertAll(it.asEntity()) }
-            )
-    }
+    override fun getEmployees(): Single<List<Employee>> = getEmployeesFromMemoryCache()
+        .switchIfEmpty(getEmployeesFromPersistentCache() )
+        .switchIfEmpty(getEmployeesFromNetwork())
+
+    private fun getEmployeesFromMemoryCache() = memoryCacheRepository.getEmployees()
+
+    private fun getEmployeesFromPersistentCache() = persistentCacheRepository.employeeDao.getEmployees()
+        .map { it.toDataModel() }
+        .filter { it.isNotEmpty() }
+        .doOnSuccess { memoryCacheRepository.insertEmployees(it) }
+
+    private fun getEmployeesFromNetwork() = api.getEmployees()
+        .map { it.employees }
+        .doOnSuccess {
+            memoryCacheRepository.insertEmployees(it)
+            persistentCacheRepository.employeeDao.insertAll(it.asEntity())
+        }
 }

@@ -1,9 +1,10 @@
-package com.interview.employeedirectory.datalayer.cache
+package com.interview.employeedirectory.datalayer.persistentcache
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.interview.employeedirectory.models.Employee
 import com.interview.employeedirectory.models.EmployeeType
+import java.util.concurrent.TimeUnit
 
 @Entity(tableName = "Employees")
 data class EmployeeEntity(
@@ -19,7 +20,8 @@ data class EmployeeEntity(
     val employeeType: EmployeeType
 ) {
     companion object {
-        val timeToLive: Long = java.util.concurrent.TimeUnit.MINUTES.toMillis(1)
+        private const val DEFAULT_TTL_MINS = 60L
+        val timeToLive = TimeUnit.MINUTES.toMillis(DEFAULT_TTL_MINS)
     }
 }
 

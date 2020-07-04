@@ -4,7 +4,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.room.Room
 import com.interview.employeedirectory.datalayer.DataRepository
 import com.interview.employeedirectory.datalayer.DataRepositoryImpl
-import com.interview.employeedirectory.datalayer.cache.PersistentCache
+import com.interview.employeedirectory.datalayer.memorycache.MemoryCacheRepository
+import com.interview.employeedirectory.datalayer.persistentcache.PersistentCacheRepository
 import com.interview.employeedirectory.ui.employeelist.EmployeeListContract
 import com.interview.employeedirectory.ui.employeelist.EmployeeListPresenter
 import org.koin.android.ext.koin.androidContext
@@ -16,10 +17,11 @@ val applicationModule = module {
     single {
         Room.databaseBuilder(
             androidContext(),
-            PersistentCache::class.java,
+            PersistentCacheRepository::class.java,
             "persistentCache"
         ).build()
     }
+    single { MemoryCacheRepository() }
     single { SubscriptionConfig.createDefaultConfig() }
     factory { (lifecycle: Lifecycle) -> LifecycleAwareSubscriptionManager(lifecycle) }
 }
