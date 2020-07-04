@@ -1,12 +1,18 @@
 package com.interview.employeedirectory.datalayer
 
+import android.util.Log
+import com.interview.employeedirectory.datalayer.cache.PersistentCache
+import com.interview.employeedirectory.models.Employee
+import io.reactivex.Single
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val BASE_URL = "https://s3.amazonaws.com/sq-mobile-interview/"
 
-class DataRepositoryImpl: DataRepository {
+class DataRepositoryImpl: DataRepository, KoinComponent {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -15,6 +21,15 @@ class DataRepositoryImpl: DataRepository {
         .build()
     private val api = retrofit.create(EmployeeApi::class.java)
 
-    //TODO: Implement Caching
-    override fun getEmployees() = api.getEmployees().map { it.employees }
+    private val persistentCache: PersistentCache by inject()
+
+    override fun getEmployees(): Single<List<Employee>> {
+        return persistentCache.employeeDao.getEmployees()
+            .filter { it.isNotEmpty() }
+            .switchIfEmpty(
+                api.getEmployees()
+                    .map { it.employees }
+                    .doOnSuccess { persistentCache.employeeDao.insertAll(it) }
+            )
+    }
 }

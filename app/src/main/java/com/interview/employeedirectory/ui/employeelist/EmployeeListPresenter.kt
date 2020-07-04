@@ -1,6 +1,5 @@
 package com.interview.employeedirectory.ui.employeelist
 
-import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.interview.employeedirectory.base.LifecycleAwareSubscriptionManager
@@ -12,7 +11,6 @@ import org.koin.core.inject
 
 class EmployeeListPresenter(
     private val view: EmployeeListContract.View,
-    private val viewModel: EmployeeListViewModel,
     private val subscriptionManager: LifecycleAwareSubscriptionManager
 ): EmployeeListContract.Presenter, KoinComponent {
 
@@ -20,19 +18,8 @@ class EmployeeListPresenter(
 
     override fun onRetryClicked() = loadEmployeeList()
 
-    override fun onSaveInstanceState(savedState: Bundle) = viewModel.saveState(savedState)
-
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    private fun onCreate() {
-        if (viewModel.employees.isNotEmpty()) {
-            view.displayEmployeeList(viewModel.employees)
-            return
-        }
-        loadEmployeeList()
-    }
-
     private fun loadEmployeeList() {
-        viewModel.employees.clear()
         view.displayLoading()
         subscriptionManager.subscribe(
             dataRepository.getEmployees(),
@@ -42,7 +29,6 @@ class EmployeeListPresenter(
                         view.displayEmptyState()
                     } else {
                         view.displayEmployeeList(employees)
-                        viewModel.employees.addAll(employees)
                     }
                 }
 

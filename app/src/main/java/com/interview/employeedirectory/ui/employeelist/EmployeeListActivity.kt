@@ -17,19 +17,7 @@ class EmployeeListActivity: BaseActivity(), EmployeeListContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = get {
-            val viewModel = if (savedInstanceState != null) {
-                EmployeeListViewModel.fromBundle(savedInstanceState)
-            } else {
-                EmployeeListViewModel()
-            }
-            parametersOf(this, viewModel, lifecycle)
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        presenter.onSaveInstanceState(outState)
-        super.onSaveInstanceState(outState)
+        presenter = get { parametersOf(this, lifecycle) }
     }
 
     override fun displayError() {

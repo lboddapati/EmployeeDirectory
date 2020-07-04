@@ -7,7 +7,6 @@ import com.interview.employeedirectory.datalayer.DataRepository
 import com.interview.employeedirectory.models.Employee
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.koin.dsl.module
@@ -33,29 +32,18 @@ class EmployeeListPresenterTest: KoinTest {
     fun onCreate_withoutSavedState_loadsEmployees() {
         whenever(dataRepository.getEmployees()).thenReturn(Single.just(listOf()))
         LifecycleRegistry(mock()).apply {
-            addObserver(EmployeeListPresenter(view, EmployeeListViewModel(), get()))
+            addObserver(EmployeeListPresenter(view, get()))
             handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
         }
 
         verify(dataRepository).getEmployees()
     }
 
-    fun onCreate_withSavedState_displaysSavedResults() {
-        val viewModel = EmployeeListViewModel(arrayListOf(mock<Employee>()))
-        LifecycleRegistry(mock()).apply {
-            addObserver(EmployeeListPresenter(view, viewModel, get()))
-            handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        }
-
-        verify(view).displayEmployeeList(viewModel.employees)
-        verify(dataRepository, never()).getEmployees()
-    }
-
     @Test
     fun onRetryClicked_loadsEmployees() {
         whenever(dataRepository.getEmployees())
             .thenReturn(Single.just(listOf()))
-        EmployeeListPresenter(view, EmployeeListViewModel(), get()).onRetryClicked()
+        EmployeeListPresenter(view, get()).onRetryClicked()
 
         verify(dataRepository).getEmployees()
     }
@@ -65,22 +53,20 @@ class EmployeeListPresenterTest: KoinTest {
         whenever(dataRepository.getEmployees())
             .thenReturn(Single.just(listOf()))
         // Trigger request
-        EmployeeListPresenter(view, EmployeeListViewModel(), get()).onRetryClicked()
+        EmployeeListPresenter(view, get()).onRetryClicked()
 
         verify(view).displayEmptyState()
     }
 
     @Test
-    fun onEmployeeListRequestSuccess_nonEmptyResults_updatesViewAndModelWithResults() {
-        val viewModel = EmployeeListViewModel()
+    fun onEmployeeListRequestSuccess_nonEmptyResults_updatesViewWithResults() {
         val loadedEmployees = listOf(mock<Employee>())
         whenever(dataRepository.getEmployees())
             .thenReturn(Single.just(loadedEmployees))
         // Trigger request
-        EmployeeListPresenter(view, viewModel, get()).onRetryClicked()
+        EmployeeListPresenter(view, get()).onRetryClicked()
 
         verify(view).displayEmployeeList(loadedEmployees)
-        assertTrue(viewModel.employees.containsAll(loadedEmployees))
     }
 
     @Test
@@ -88,16 +74,8 @@ class EmployeeListPresenterTest: KoinTest {
         whenever(dataRepository.getEmployees())
             .thenReturn(Single.error(Throwable()))
         // Trigger request
-        EmployeeListPresenter(view, EmployeeListViewModel(), get()).onRetryClicked()
+        EmployeeListPresenter(view, get()).onRetryClicked()
 
         verify(view).displayError()
-    }
-
-    @Test
-    fun onSaveInstanceState_delegatesToViewModel() {
-        val viewModel = mock<EmployeeListViewModel>()
-        EmployeeListPresenter(view, viewModel, get()).onSaveInstanceState(mock())
-
-        verify(viewModel).saveState(any())
     }
 }
