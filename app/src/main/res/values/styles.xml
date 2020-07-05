@@ -34,7 +34,7 @@
     </style>
 
     <style name="CaptionText">
-        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textSize">@dimen/text_size_caption</item>
         <item name="android:textColor">@color/darkGray</item>
         <item name="android:textStyle">normal</item>
     </style>

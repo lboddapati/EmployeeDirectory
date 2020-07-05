@@ -11,14 +11,17 @@ import com.interview.employeedirectory.R
 import com.interview.employeedirectory.models.Employee
 import org.koin.core.KoinComponent
 
-class EmployeeListAdapter: RecyclerView.Adapter<EmployeeListItemViewHolder>() {
+class EmployeeListAdapter(
+    private val presenter: EmployeeListContract.Presenter
+): RecyclerView.Adapter<EmployeeListItemViewHolder>() {
     private val employees = arrayListOf<Employee>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ) = EmployeeListItemViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.employee_list_item, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.employee_list_item, parent, false),
+        presenter
     )
 
     override fun onBindViewHolder(holder: EmployeeListItemViewHolder, position: Int) {
@@ -34,13 +37,23 @@ class EmployeeListAdapter: RecyclerView.Adapter<EmployeeListItemViewHolder>() {
     }
 }
 
-class EmployeeListItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), KoinComponent {
+class EmployeeListItemViewHolder(
+    itemView: View,
+    presenter: EmployeeListContract.Presenter
+): RecyclerView.ViewHolder(itemView), KoinComponent {
 
     private val thumbnail = itemView.findViewById<ImageView>(R.id.thumbnail)
     private val name = itemView.findViewById<TextView>(R.id.name)
     private val team = itemView.findViewById<TextView>(R.id.team)
 
+    private lateinit var selectedEmployee: Employee
+
+    init {
+        itemView.setOnClickListener { presenter.onEmployeeSelected(selectedEmployee) }
+    }
+
     fun bind(employee: Employee) {
+        selectedEmployee = employee
         Glide.with(itemView.context)
             .load(employee.smallImageUrl ?: "")
             .thumbnail(0.25f)

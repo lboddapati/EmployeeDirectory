@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.interview.employeedirectory.R
 import com.interview.employeedirectory.base.BaseActivity
 import com.interview.employeedirectory.models.Employee
+import com.interview.employeedirectory.ui.employeedetail.EmployeeDetailActivity
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 
 class EmployeeListActivity: BaseActivity(), EmployeeListContract.View {
 
     private lateinit var presenter: EmployeeListContract.Presenter
-    private val adapter: EmployeeListAdapter by lazy { EmployeeListAdapter() }
+    private val adapter: EmployeeListAdapter by lazy { EmployeeListAdapter(presenter) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,10 @@ class EmployeeListActivity: BaseActivity(), EmployeeListContract.View {
         setContentView(R.layout.recyclerview)
         setupRecyclerView()
         adapter.addEmployees(employees)
+    }
+
+    override fun openEmployeeDetail(employee: Employee) {
+        startActivity(EmployeeDetailActivity.intentFor(this, employee))
     }
 
     private fun setupRecyclerView() {

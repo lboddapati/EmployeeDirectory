@@ -14,4 +14,5 @@
 
     <dimen name="spinner_size">152dp</dimen>
     <dimen name="thumbnail_size">40dp</dimen>
+    <dimen name="large_image_size">200dp</dimen>
 </resources>

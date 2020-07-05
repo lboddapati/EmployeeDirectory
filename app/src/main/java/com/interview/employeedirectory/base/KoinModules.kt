@@ -6,6 +6,9 @@ import com.interview.employeedirectory.datalayer.DataRepository
 import com.interview.employeedirectory.datalayer.DataRepositoryImpl
 import com.interview.employeedirectory.datalayer.memorycache.MemoryCacheRepository
 import com.interview.employeedirectory.datalayer.persistentcache.PersistentCacheRepository
+import com.interview.employeedirectory.models.Employee
+import com.interview.employeedirectory.ui.employeedetail.EmployeeDetailContract
+import com.interview.employeedirectory.ui.employeedetail.EmployeeDetailPresenter
 import com.interview.employeedirectory.ui.employeelist.EmployeeListContract
 import com.interview.employeedirectory.ui.employeelist.EmployeeListPresenter
 import org.koin.android.ext.koin.androidContext
@@ -34,5 +37,14 @@ val presenterFactoryModule = module {
             view = view,
             subscriptionManager = get { parametersOf(lifecycle) }
         ).apply { lifecycle.addObserver(this) }
+    }
+
+    factory<EmployeeDetailContract.Presenter> {
+        (employee: Employee?,
+            view: EmployeeDetailContract.View,
+            lifecycle: Lifecycle) ->
+        EmployeeDetailPresenter(employee, view).apply {
+            lifecycle.addObserver(this)
+        }
     }
 }

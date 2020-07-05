@@ -18,6 +18,10 @@ class EmployeeListPresenter(
 
     override fun onRetryClicked() = loadEmployeeList()
 
+    override fun onEmployeeSelected(employee: Employee) {
+        view.openEmployeeDetail(employee)
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private fun loadEmployeeList() {
         view.displayLoading()

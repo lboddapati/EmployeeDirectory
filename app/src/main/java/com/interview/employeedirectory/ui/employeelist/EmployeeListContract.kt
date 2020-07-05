@@ -10,9 +10,11 @@ interface EmployeeListContract {
         fun displayError()
         fun displayEmptyState()
         fun displayEmployeeList(employees: List<Employee>)
+        fun openEmployeeDetail(employee: Employee)
     }
 
     interface Presenter: BasePresenter {
         fun onRetryClicked()
+        fun onEmployeeSelected(employee: Employee)
     }
 }

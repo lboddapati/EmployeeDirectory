@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/large_image_size"
+        android:contentDescription="@string/employee_image_content_description"
+        tools:src="@drawable/default_profile_photo" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding_default"
+        android:paddingTop="@dimen/padding_small"
+        android:paddingEnd="@dimen/padding_default"
+        android:textAppearance="@style/TitleText"
+        tools:text="Lasya Boddapati" />
+
+    <TextView
+        android:id="@+id/biography"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding_default"
+        android:paddingEnd="@dimen/padding_default"
+        android:textAppearance="@style/CaptionText"
+        tools:text="A short biography describing the employee." />
+
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableStart="@android:drawable/sym_action_call"
+        android:drawablePadding="@dimen/padding_small"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="@dimen/padding_default"
+        android:textAppearance="@style/BodyText"
+        tools:text="(408) 123-9586" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableStart="@android:drawable/sym_action_email"
+        android:drawablePadding="@dimen/padding_small"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="@dimen/padding_default"
+        android:textAppearance="@style/BodyText"
+        tools:text="xyz@email.com" />
+
+</LinearLayout>
