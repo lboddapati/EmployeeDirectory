@@ -69,7 +69,7 @@ class LifecycleAwareSubscriptionManager(lifecycle: Lifecycle): LifecycleObserver
         .subscribeWith(observer)
         .also { disposables.add(it) }
 
-    fun <T> subscribe(
+    fun subscribe(
         completable: Completable,
         observer: DisposableCompletableObserver
     ) = completable

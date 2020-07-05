@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.GONE
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,6 +27,7 @@ class EmployeeDetailActivity: BaseActivity(), EmployeeDetailContract.View {
     }
 
     private lateinit var presenter: EmployeeDetailContract.Presenter
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,5 +73,25 @@ class EmployeeDetailActivity: BaseActivity(), EmployeeDetailContract.View {
 
     override fun startEmail(email: String) {
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email")))
+    }
+
+    override fun updateFavoriteState(isFavorite: Boolean) {
+        this.isFavorite = isFavorite
+        invalidateOptionsMenu()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.employee_detail_menu, menu)
+        menu.findItem(R.id.add_favorite).isVisible = !isFavorite
+        menu.findItem(R.id.remove_favorite).isVisible = isFavorite
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.add_favorite -> presenter.onAddFavoriteClicked()
+            R.id.remove_favorite -> presenter.onRemoveFavoriteClicked()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

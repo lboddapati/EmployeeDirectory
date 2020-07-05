@@ -10,10 +10,13 @@ interface EmployeeDetailContract {
         fun displayEmployee(employee: Employee)
         fun startPhoneCall(phoneNumber: String)
         fun startEmail(email: String)
+        fun updateFavoriteState(isFavorite: Boolean)
     }
 
     interface Presenter: BasePresenter {
         fun onPhoneClicked()
         fun onEmailClicked()
+        fun onAddFavoriteClicked()
+        fun onRemoveFavoriteClicked()
     }
 }

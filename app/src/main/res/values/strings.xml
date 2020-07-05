@@ -5,4 +5,6 @@
     <string name="retry">Retry</string>
     <string name="no_employees_found">No Employees found.</string>
     <string name="employee_image_content_description">Employee profile picture</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="remove_favorite">Remove Favorite</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.interview.employeedirectory.base
 
+import android.content.Context
 import androidx.lifecycle.Lifecycle
 import androidx.room.Room
 import com.interview.employeedirectory.datalayer.DataRepository
@@ -15,6 +16,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
+private const val SHARED_PREFS_NAME = "EmployeeDirectorySharedPrefs"
+
 val applicationModule = module {
     single<DataRepository> { DataRepositoryImpl() }
     single {
@@ -25,6 +28,7 @@ val applicationModule = module {
         ).build()
     }
     single { MemoryCacheRepository() }
+    single { androidContext().getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE) }
     single { SubscriptionConfig.createDefaultConfig() }
     factory { (lifecycle: Lifecycle) -> LifecycleAwareSubscriptionManager(lifecycle) }
 }
@@ -43,8 +47,10 @@ val presenterFactoryModule = module {
         (employee: Employee?,
             view: EmployeeDetailContract.View,
             lifecycle: Lifecycle) ->
-        EmployeeDetailPresenter(employee, view).apply {
-            lifecycle.addObserver(this)
-        }
+        EmployeeDetailPresenter(
+            employee,
+            view = view,
+            subscriptionManager = get { parametersOf(lifecycle) }
+        ).apply { lifecycle.addObserver(this) }
     }
 }
